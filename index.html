@@ -1,0 +1,762 @@
+```html
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nahu Pondok — Faham Nahu, Kuasai I'rab (Matan al-Ajurumiyyah)</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Amiri & Scheherazade New for Classical Vocalized Arabic, Plus Jakarta Sans for Malay UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pondok: {
+              950: '#07221A',
+              900: '#0D3B2E',
+              800: '#14532D',
+              700: '#1B4332',
+              600: '#2D6A4F',
+              100: '#E8F3EE',
+              50: '#F2F9F6'
+            },
+            cream: {
+              50: '#FCFBF7',
+              100: '#FAF7F0',
+              200: '#F4EFE6',
+              300: '#E8DFCE'
+            },
+            gold: {
+              600: '#A67C2E',
+              500: '#C5A059',
+              400: '#D4AF37',
+              200: '#F3E5AB',
+              100: '#FBF6E6'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Scheherazade New"', '"Amiri"', 'serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --arabic-scale: 1;
+    }
+    body {
+      background-color: #FAF7F0;
+      color: #1C2826;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-image: radial-gradient(#C5A059 0.45px, transparent 0.45px);
+      background-size: 24px 24px;
+    }
+    /* Classical Vocalized Arabic Typography */
+    .font-arabic {
+      font-family: 'Scheherazade New', 'Amiri', serif;
+      direction: rtl;
+      unicode-bidi: isolate;
+      line-height: 2.15;
+      letter-spacing: 0;
+    }
+    .arabic-matan {
+      font-size: calc(1.65rem * var(--arabic-scale));
+      line-height: 2.35;
+    }
+    .arabic-lg {
+      font-size: calc(1.45rem * var(--arabic-scale));
+      line-height: 2.2;
+    }
+    .arabic-md {
+      font-size: calc(1.25rem * var(--arabic-scale));
+      line-height: 2.05;
+    }
+    /* Islamic Geometric Subtle Header Accent */
+    .islamic-header-bg {
+      background: linear-gradient(135deg, #0D3B2E 0%, #14532D 60%, #07221A 100%);
+      position: relative;
+    }
+    .gold-border-card {
+      border: 1px solid #E6DEC8;
+      box-shadow: 0 4px 20px -2px rgba(13, 59, 46, 0.06);
+    }
+    .matan-box {
+      background: linear-gradient(180deg, #FCFBF7 0%, #F4EFE6 100%);
+      border: 2px solid #D4AF37;
+      box-shadow: inset 0 0 0 4px #FCFBF7, inset 0 0 0 5px rgba(197, 160, 89, 0.35);
+    }
+    .hidden-word-chip {
+      background: #FBF6E6;
+      color: transparent;
+      border-bottom: 2px dashed #C5A059;
+      border-radius: 6px;
+      padding: 0 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .hidden-word-chip:hover {
+      background: #F3E5AB;
+    }
+    .hidden-word-chip.revealed {
+      color: #0D3B2E;
+      background: #DCFCE7;
+      border-bottom: 2px solid #15803D;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F4EFE6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C5A059;
+      border-radius: 3px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col pb-24">
+
+  <!-- STICKY TOP HEADER -->
+  <header class="islamic-header-bg text-cream-50 sticky top-0 z-40 shadow-lg border-b-2 border-gold-500">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigate('utama')">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-pondok-950 border-2 border-gold-400 flex items-center justify-center shadow-inner shrink-0">
+          <span class="font-arabic text-gold-400 text-2xl font-bold pt-1">ن</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-base sm:text-lg tracking-tight text-white">NAHU PONDOK</h1>
+            <span class="hidden sm:inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-200 border border-gold-400/40 font-semibold">Al-Ajurumiyyah</span>
+          </div>
+          <p class="text-xs text-gold-200 font-medium">Faham Nahu, Kuasai I'rab.</p>
+        </div>
+      </div>
+
+      <!-- Quick Tools & Mode Switcher -->
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+        <!-- Quick Pill:Latihan I'rab -->
+        <button onclick="app.openIrabWorkbench()" class="px-2.5 py-1.5 rounded-lg bg-pondok-950/70 hover:bg-pondok-950 text-xs font-semibold text-gold-200 border border-gold-500/40 flex items-center gap-1.5 transition" title="Modul Khas Latihan I'rab 6 Tahap">
+          <i class="fa-solid fa-diagram-project text-gold-400"></i>
+          <span class="hidden md:inline">Latihan</span> I'rab
+        </button>
+
+        <!-- Quick Pill: Hafazan Matan -->
+        <button onclick="app.openHafazanModule()" class="px-2.5 py-1.5 rounded-lg bg-pondok-950/70 hover:bg-pondok-950 text-xs font-semibold text-gold-200 border border-gold-500/40 flex items-center gap-1.5 transition" title="Modul Hafazan Matan">
+          <i class="fa-solid fa-book-quran text-gold-400"></i>
+          <span class="hidden sm:inline">Hafazan</span>
+        </button>
+
+        <!-- Quick Pill: Kamus Nahu Modal -->
+        <button onclick="app.toggleKamusModal(true)" class="px-2.5 py-1.5 rounded-lg bg-pondok-950/70 hover:bg-pondok-950 text-xs font-semibold text-gold-200 border border-gold-500/40 flex items-center gap-1.5 transition" title="Kamus Istilah Nahu">
+          <i class="fa-solid fa-spell-check text-gold-400"></i>
+          <span>Kamus</span>
+        </button>
+
+        <!-- Arabic Font Size Adjuster -->
+        <div class="hidden sm:flex items-center bg-pondok-950/80 rounded-lg border border-gold-500/30 p-0.5">
+          <button onclick="app.adjustArabicFont(-0.12)" class="px-2 py-1 text-xs text-cream-100 hover:text-gold-400 font-bold" title="Kecilkan Tulisan Arab">A-</button>
+          <span class="text-[10px] text-gold-400 px-1 font-arabic">ع</span>
+          <button onclick="app.adjustArabicFont(0.12)" class="px-2 py-1 text-xs text-cream-100 hover:text-gold-400 font-bold" title="Besarkan Tulisan Arab">A+</button>
+        </div>
+
+        <!-- Student / Teacher Role Switch -->
+        <button id="roleToggleBtn" onclick="app.toggleRoleMode()" class="px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 border transition shadow-sm bg-gold-500 text-pondok-950 border-gold-400">
+          <i class="fa-solid fa-user-graduate" id="roleIcon"></i>
+          <span id="roleLabel">Mod Pelajar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-5">
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toastBanner" class="hidden fixed bottom-20 right-4 left-4 sm:left-auto sm:w-96 z-50 bg-pondok-900 text-white border-2 border-gold-400 rounded-xl p-3.5 shadow-2xl flex items-start gap-3 animate-fade">
+      <i class="fa-solid fa-circle-check text-gold-400 text-lg mt-0.5" id="toastIcon"></i>
+      <div class="flex-1 text-xs sm:text-sm">
+        <p class="font-bold text-gold-200" id="toastTitle">Makluman</p>
+        <p class="text-cream-100 mt-0.5" id="toastMessage"></p>
+      </div>
+      <button onclick="document.getElementById('toastBanner').classList.add('hidden')" class="text-cream-300 hover:text-white">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- ==========================================
+         VIEW 1: HALAMAN UTAMA (DASHBOARD)
+    =========================================== -->
+    <section id="view-utama" class="space-y-6 animate-fade">
+      <!-- Hero Greeting & Overall Statistics -->
+      <div class="islamic-header-bg rounded-2xl p-5 sm:p-6 text-cream-50 border-2 border-gold-500/60 shadow-xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/20 border border-gold-400/40 text-gold-200 text-xs font-semibold mb-2">
+              <i class="fa-solid fa-mosque"></i>
+              <span>Pengajian Kitab Turath • Matan Mimmah (Al-Ajurumiyyah)</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white">
+              Assalamu'alaikum, <span id="dashStudentName" class="text-gold-400 underline decoration-gold-500/50 cursor-pointer" onclick="app.navigate('profil')" title="Klik untuk kemas kini profil">Thalib Ahmad</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-cream-200 mt-1 max-w-2xl">
+              "Barangsiapa yang menguasai Matan al-Ajurumiyyah, maka dia telah memegang kunci utama memahami kalam Arab dan al-Quran."
+            </p>
+          </div>
+          <!-- Primary 3 Action Buttons -->
+          <div class="flex flex-wrap gap-2.5 shrink-0">
+            <button onclick="app.resumeLearning()" class="px-4 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-pondok-950 font-bold text-xs sm:text-sm shadow-md flex items-center gap-2 transition">
+              <i class="fa-solid fa-book-open-reader"></i>
+              <span>Sambung Belajar</span>
+            </button>
+            <button onclick="app.navigate('latihan'); app.switchLatihanMode('kuiz')" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-gold-400/50 font-bold text-xs sm:text-sm flex items-center gap-2 transition">
+              <i class="fa-solid fa-pen-to-square text-gold-400"></i>
+              <span>Mula Latihan</span>
+            </button>
+            <button onclick="app.openHafazanModule()" class="px-4 py-2.5 rounded-xl bg-pondok-950/80 hover:bg-pondok-950 text-gold-200 border border-gold-500/40 font-bold text-xs sm:text-sm flex items-center gap-2 transition">
+              <i class="fa-solid fa-brain text-gold-400"></i>
+              <span>Hafazan Matan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Key Progress Metrics -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6 pt-5 border-t border-white/10">
+          <div class="bg-pondok-950/60 border border-white/10 rounded-xl p-3.5">
+            <div class="flex items-center justify-between text-xs text-gold-200">
+              <span>Bab Dipelajari</span>
+              <i class="fa-solid fa-book-bookmark text-gold-400"></i>
+            </div>
+            <p class="text-2xl font-extrabold text-white mt-1" id="statChaptersDone">0 / 6</p>
+            <p class="text-[11px] text-cream-300 mt-0.5">Kitab al-Ajurumiyyah</p>
+          </div>
+
+          <div class="bg-pondok-950/60 border border-white/10 rounded-xl p-3.5">
+            <div class="flex items-center justify-between text-xs text-gold-200">
+              <span>Latihan Selesai</span>
+              <i class="fa-solid fa-list-check text-gold-400"></i>
+            </div>
+            <p class="text-2xl font-extrabold text-white mt-1" id="statExercisesDone">0</p>
+            <p class="text-[11px] text-cream-300 mt-0.5">Soalan & I'rab Dijawab</p>
+          </div>
+
+          <div class="bg-pondok-950/60 border border-white/10 rounded-xl p-3.5">
+            <div class="flex items-center justify-between text-xs text-gold-200">
+              <span>Peratus Penguasaan</span>
+              <i class="fa-solid fa-chart-pie text-gold-400"></i>
+            </div>
+            <p class="text-2xl font-extrabold text-gold-400 mt-1" id="statMasteryPercent">0%</p>
+            <p class="text-[11px] text-cream-300 mt-0.5" id="statMasteryBadge">Peringkat Mubtadi'</p>
+          </div>
+
+          <div class="bg-pondok-950/60 border border-white/10 rounded-xl p-3.5">
+            <div class="flex items-center justify-between text-xs text-gold-200">
+              <span>Hafazan Matan</span>
+              <i class="fa-solid fa-scroll text-gold-400"></i>
+            </div>
+            <p class="text-2xl font-extrabold text-white mt-1" id="statHafazanDone">0 / 18</p>
+            <p class="text-[11px] text-cream-300 mt-0.5">Perenggan Matan Sahih</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teacher Assignment Alert (If Active) -->
+      <div id="teacherAssignmentBanner" class="hidden bg-amber-50 border-2 border-amber-500 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-200 text-amber-900">Tugasan Guru Aktif</span>
+              <span class="text-xs font-semibold text-amber-800" id="assignDifficultyBadge">Tahap Sederhana</span>
+            </div>
+            <h3 class="font-bold text-pondok-950 text-sm sm:text-base mt-0.5" id="assignTitleText">Latihan Pengukuhan Bab al-I'rab</h3>
+            <p class="text-xs text-slate-600" id="assignDescText">Sila selesaikan tugasan yang ditetapkan oleh Guru Nahu anda.</p>
+          </div>
+        </div>
+        <button onclick="app.startTeacherAssignment()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shrink-0 shadow transition">
+          Mulakan Tugasan <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+
+      <!-- Main Grid: Active Chapter & Adaptive Weak-Concept Recommendation -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- Left 2 Columns: Bab Sedang Dipelajari + Senarai Ringkas Bab -->
+        <div class="lg:col-span-2 space-y-5">
+          <!-- Bab Sedang Dipelajari Card -->
+          <div class="bg-white rounded-2xl p-5 gold-border-card">
+            <div class="flex items-center justify-between border-b border-cream-300 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                <h3 class="font-bold text-pondok-900 text-sm uppercase tracking-wider">Bab Sedang Dipelajari</h3>
+              </div>
+              <span class="text-xs font-semibold text-gold-600 bg-gold-100 px-2.5 py-1 rounded-full border border-gold-400/40" id="activeChapterOrderBadge">Bab 1 daripada 6</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-cream-100 p-4 rounded-xl border border-cream-300">
+              <div>
+                <p class="font-arabic text-2xl text-pondok-900 font-bold" id="activeChapterArabic">بَابُ الْكَلَامِ</p>
+                <h4 class="text-lg font-extrabold text-pondok-950 mt-0.5" id="activeChapterTitle">Bab 1: Bab al-Kalam (Pengertian & Pembahagian Kalam)</h4>
+                <p class="text-xs text-slate-600 mt-1" id="activeChapterSummary">Memahami 4 syarat Kalam Nahu (Lafaz, Murakkab, Mufid, Bil-Wadh'i) serta tanda-tanda Isim, Fi'il, dan Huruf.</p>
+              </div>
+            </div>
+
+            <!-- Direct Jump Sub-Module Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4">
+              <button onclick="app.openActiveChapterTab('matan')" class="p-2.5 rounded-xl bg-pondok-50 hover:bg-pondok-900 hover:text-white text-pondok-900 border border-pondok-600/20 text-xs font-bold flex flex-col items-center gap-1 transition">
+                <i class="fa-solid fa-book-open text-gold-600"></i>
+                <span>Matan Arab</span>
+              </button>
+              <button onclick="app.openActiveChapterTab('terjemahan')" class="p-2.5 rounded-xl bg-pondok-50 hover:bg-pondok-900 hover:text-white text-pondok-900 border border-pondok-600/20 text-xs font-bold flex flex-col items-center gap-1 transition">
+                <i class="fa-solid fa-language text-gold-600"></i>
+                <span>Terjemahan</span>
+              </button>
+              <button onclick="app.openActiveChapterTab('nota')" class="p-2.5 rounded-xl bg-pondok-50 hover:bg-pondok-900 hover:text-white text-pondok-900 border border-pondok-600/20 text-xs font-bold flex flex-col items-center gap-1 transition">
+                <i class="fa-solid fa-lightbulb text-gold-600"></i>
+                <span>Nota Konsep</span>
+              </button>
+              <button onclick="app.openActiveChapterTab('contoh')" class="p-2.5 rounded-xl bg-pondok-50 hover:bg-pondok-900 hover:text-white text-pondok-900 border border-pondok-600/20 text-xs font-bold flex flex-col items-center gap-1 transition">
+                <i class="fa-solid fa-sitemap text-gold-600"></i>
+                <span>Contoh & I'rab</span>
+              </button>
+              <button onclick="app.openActiveChapterTab('latihan')" class="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-pondok-900 hover:bg-pondok-800 text-white text-xs font-bold flex flex-col items-center gap-1 transition">
+                <i class="fa-solid fa-pen-clip text-gold-400"></i>
+                <span>Latihan Bab</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Overview of All 6 Chapters -->
+          <div class="bg-white rounded-2xl p-5 gold-border-card">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-pondok-900 text-base flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-gold-500"></i>
+                <span>Turutan Bab Kitab al-Ajurumiyyah</span>
+              </h3>
+              <button onclick="app.navigate('kitab')" class="text-xs font-bold text-pondok-800 hover:underline">Buka Modul Kitab &rarr;</button>
+            </div>
+            <div id="dashboardChaptersList" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+
+        <!-- Right 1 Column: Sistem Ulangkaji Berfokus & Rekod Terkini -->
+        <div class="space-y-5">
+          <!-- Adaptive Learning / Weak Concept Card -->
+          <div class="bg-white rounded-2xl p-5 gold-border-card border-l-4 border-l-gold-500">
+            <div class="flex items-center gap-2 text-pondok-900 font-bold text-sm">
+              <i class="fa-solid fa-compass-drafting text-gold-600"></i>
+              <span>Sistem Pembelajaran Berulang</span>
+            </div>
+            <div id="adaptiveRecommendationBox" class="mt-3"></div>
+          </div>
+
+          <!-- Rekod Pencapaian Terkini -->
+          <div class="bg-white rounded-2xl p-5 gold-border-card">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-pondok-900 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-gold-500"></i>
+                <span>Rekod Pencapaian Terkini</span>
+              </h3>
+              <button onclick="app.navigate('kemajuan')" class="text-xs font-semibold text-pondok-700 hover:underline">Lihat Semua</button>
+            </div>
+            <div id="recentActivityList" class="space-y-2.5"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 2: MODUL KITAB AL-AJURUMIYYAH
+    =========================================== -->
+    <section id="view-kitab" class="hidden space-y-5 animate-fade">
+      <!-- Chapter Selector Bar -->
+      <div class="bg-white rounded-2xl p-4 gold-border-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gold-600">Modul Kitab Turath</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-pondok-950">Matan al-Ajurumiyyah (Matan Mimmah)</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 font-semibold">
+              <i class="fa-solid fa-certificate text-emerald-600 mr-1"></i>Teks Matan Sahih Berbaris Penuh
+            </span>
+          </div>
+        </div>
+        <!-- Horizontal Chapter Pills -->
+        <div id="kitabChapterTabs" class="flex gap-2 overflow-x-auto pb-2"></div>
+      </div>
+
+      <!-- Active Chapter Header & 5 Sub-tabs (Matan, Terjemahan, Nota Konsep, Contoh & I'rab, Latihan Bab) -->
+      <div class="bg-white rounded-2xl gold-border-card overflow-hidden">
+        <!-- Chapter Banner -->
+        <div class="islamic-header-bg p-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded bg-gold-500 text-pondok-950 font-extrabold text-xs" id="kitabCurrentBadge">BAB 1</span>
+              <span id="kitabCompletionStatus" class="text-xs px-2.5 py-0.5 rounded-full bg-white/15 text-gold-200">Belum Selesai</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-extrabold mt-2" id="kitabCurrentTitle">Bab al-Kalam</h3>
+            <p class="text-xs text-cream-200 mt-0.5" id="kitabCurrentSubtitle">Pengertian Kalam, Pembahagian Kalimah & Tanda-tandanya</p>
+          </div>
+          <div class="text-right font-arabic text-3xl sm:text-4xl text-gold-400 font-bold" dir="rtl" id="kitabCurrentArabicTitle">
+            بَابُ الْكَلَامِ
+          </div>
+        </div>
+
+        <!-- 5 Sub-Navigation Tabs -->
+        <div class="bg-cream-100 border-b border-cream-300 px-3 pt-2 flex gap-1 overflow-x-auto" id="kitabSubTabBar">
+          <button onclick="app.switchKitabSubTab('matan')" data-subtab="matan" class="kitab-subtab-btn px-4 py-2.5 rounded-t-xl font-bold text-xs sm:text-sm flex items-center gap-2 border-b-2 transition">
+            <i class="fa-solid fa-scroll"></i> A. Matan
+          </button>
+          <button onclick="app.switchKitabSubTab('terjemahan')" data-subtab="terjemahan" class="kitab-subtab-btn px-4 py-2.5 rounded-t-xl font-bold text-xs sm:text-sm flex items-center gap-2 border-b-2 transition">
+            <i class="fa-solid fa-language"></i> B. Terjemahan
+          </button>
+          <button onclick="app.switchKitabSubTab('nota')" data-subtab="nota" class="kitab-subtab-btn px-4 py-2.5 rounded-t-xl font-bold text-xs sm:text-sm flex items-center gap-2 border-b-2 transition">
+            <i class="fa-solid fa-book-open-reader"></i> C. Nota Konsep
+          </button>
+          <button onclick="app.switchKitabSubTab('contoh')" data-subtab="contoh" class="kitab-subtab-btn px-4 py-2.5 rounded-t-xl font-bold text-xs sm:text-sm flex items-center gap-2 border-b-2 transition">
+            <i class="fa-solid fa-sitemap"></i> D. Contoh & I'rab
+          </button>
+          <button onclick="app.switchKitabSubTab('latihan')" data-subtab="latihan" class="kitab-subtab-btn px-4 py-2.5 rounded-t-xl font-bold text-xs sm:text-sm flex items-center gap-2 border-b-2 transition">
+            <i class="fa-solid fa-pen-to-square"></i> E. Latihan Bab
+          </button>
+        </div>
+
+        <!-- Sub-Tab Content Area -->
+        <div id="kitabSubTabContent" class="p-4 sm:p-6"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 3: MODUL LATIHAN INTERAKTIF, LATIHAN I'RAB & HAFAZAN
+    =========================================== -->
+    <section id="view-latihan" class="hidden space-y-5 animate-fade">
+      <!-- Top Mode Switcher inside Latihan Hub -->
+      <div class="bg-white rounded-2xl p-4 gold-border-card">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gold-600">Pusat Latihan & Pengukuhan</span>
+            <h2 class="text-lg sm:text-xl font-extrabold text-pondok-950">Uji Kefahaman Nahu & Kemahiran I'rab</h2>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="app.switchLatihanMode('kuiz')" id="btnModeKuiz" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2">
+              <i class="fa-solid fa-bolt"></i> 13 Jenis Latihan Interaktif
+            </button>
+            <button onclick="app.switchLatihanMode('irab')" id="btnModeIrab" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project"></i> Modul Latihan I'rab (6 Tahap)
+            </button>
+            <button onclick="app.switchLatihanMode('hafazan')" id="btnModeHafazan" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2">
+              <i class="fa-solid fa-book-quran"></i> Modul Hafazan Matan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 3A: 13 JENIS LATIHAN INTERAKTIF -->
+      <div id="subview-latihan-kuiz" class="space-y-5">
+        <!-- Filter Controls -->
+        <div class="bg-white rounded-2xl p-4 gold-border-card flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="text-xs font-bold text-pondok-900">Pilih Bab:</label>
+            <select id="quizFilterChapter" onchange="app.startFilteredQuiz()" class="text-xs sm:text-sm bg-cream-100 border border-cream-300 rounded-xl px-3 py-2 font-semibold text-pondok-950">
+              <option value="all">Semua Bab (Bab 1 - Bab 6)</option>
+              <option value="1">Bab 1: Bab al-Kalam</option>
+              <option value="2">Bab 2: Bab al-I'rab</option>
+              <option value="3">Bab 3: Mengenal Tanda-tanda I'rab</option>
+              <option value="4">Bab 4: Bab al-Af'al</option>
+              <option value="5">Bab 5: Bab al-Fa'il</option>
+              <option value="6">Bab 6: Bab al-Mubtada' & al-Khabar</option>
+            </select>
+
+            <label class="text-xs font-bold text-pondok-900 ml-1">Jenis Latihan (13 Jenis):</label>
+            <select id="quizFilterType" onchange="app.startFilteredQuiz()" class="text-xs sm:text-sm bg-cream-100 border border-cream-300 rounded-xl px-3 py-2 font-semibold text-pondok-950">
+              <option value="all">Semua 13 Jenis Latihan</option>
+              <option value="1">1. Pilihan Jawapan (MCQ)</option>
+              <option value="2">2. Betul atau Salah</option>
+              <option value="3">3. Isi Tempat Kosong</option>
+              <option value="4">4. Padankan Istilah</option>
+              <option value="5">5. Kenal Pasti Isim, Fi'il & Huruf</option>
+              <option value="6">6. Tentukan Hukum I'rab</option>
+              <option value="7">7. Tentukan Tanda I'rab</option>
+              <option value="8">8. Kenal Pasti 'Amil & Ma'mul</option>
+              <option value="9">9. Tentukan Kedudukan Kalimah</option>
+              <option value="10">10. Latihan I'rab Lengkap</option>
+              <option value="11">11. Cari Kesalahan I'rab</option>
+              <option value="12">12. Susun Kalimah Arab</option>
+              <option value="13">13. Latihan Hafazan Matan</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-pondok-800 bg-pondok-50 px-3 py-1.5 rounded-lg border border-pondok-600/20" id="quizScoreCounter">Markah Sesi: 0 / 0</span>
+            <button onclick="app.startFilteredQuiz(true)" class="text-xs font-bold text-gold-600 hover:text-pondok-900 flex items-center gap-1">
+              <i class="fa-solid fa-rotate"></i> Kocok Semula
+            </button>
+          </div>
+        </div>
+
+        <!-- Active Interactive Question Card -->
+        <div id="interactiveQuestionContainer" class="bg-white rounded-2xl p-5 sm:p-6 gold-border-card"></div>
+      </div>
+
+      <!-- SUB-VIEW 3B: MODUL KHAS LATIHAN I'RAB (6 TAHAP) -->
+      <div id="subview-latihan-irab" class="hidden space-y-5">
+        <div class="bg-white rounded-2xl p-5 sm:p-6 gold-border-card">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-cream-300 pb-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-gold-100 text-gold-600 text-xs font-bold border border-gold-400/40">
+                <i class="fa-solid fa-graduation-cap"></i> Bengkel Kemahiran I'rab Pondok
+              </div>
+              <h3 class="text-lg sm:text-xl font-extrabold text-pondok-950 mt-1">Latihan I'rab Berperingkat (Tahap 1 hingga Tahap 6)</h3>
+              <p class="text-xs text-slate-600">Pilih ayat Arab di bawah, klik pada setiap kalimah, dan selesaikan analisis I'rab melalui 6 tahap secara tersusun.</p>
+            </div>
+            <!-- Sentence Selector -->
+            <div class="shrink-0">
+              <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Pilih Ayat Latihan (Mudah &rarr; Sukar):</label>
+              <select id="irabSentenceSelect" onchange="app.selectIrabSentence(this.value)" class="w-full sm:w-80 bg-cream-100 border-2 border-gold-500 rounded-xl px-3 py-2 text-sm font-bold text-pondok-950"></select>
+            </div>
+          </div>
+
+          <!-- Selected Sentence Display & Word Picker -->
+          <div id="irabWorkbenchContent" class="mt-5"></div>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 3C: MODUL HAFAZAN MATAN -->
+      <div id="subview-latihan-hafazan" class="hidden space-y-5">
+        <div class="bg-white rounded-2xl p-5 sm:p-6 gold-border-card" id="hafazanModuleContainer"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 4: SISTEM KEMAJUAN PELAJAR
+    =========================================== -->
+    <section id="view-kemajuan" class="hidden space-y-5 animate-fade">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 gold-border-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cream-300 pb-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-gold-600">Rekod Akademik & Prestasi</span>
+            <h2 class="text-xl font-extrabold text-pondok-950">Sistem Pemantauan Kemajuan Pelajar</h2>
+          </div>
+          <button onclick="app.startRemedialQuiz()" class="px-4 py-2 rounded-xl bg-pondok-900 hover:bg-pondok-800 text-gold-200 text-xs font-bold flex items-center gap-2 self-start sm:self-auto">
+            <i class="fa-solid fa-wand-magic-sparkles text-gold-400"></i> Latihan Ulangkaji Kelemahan
+          </button>
+        </div>
+
+        <div id="kemajuanFullContent" class="mt-5 space-y-6"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 5: PROFIL, KAMUS NAHU & MOD GURU
+    =========================================== -->
+    <section id="view-profil" class="hidden space-y-5 animate-fade">
+      <!-- Sub-Navigation inside Profil View -->
+      <div class="bg-white rounded-2xl p-4 gold-border-card flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap gap-2">
+          <button onclick="app.switchProfilSubView('pelajar')" id="btnProfilPelajar" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+            <i class="fa-solid fa-user-graduate mr-1.5"></i> Profil Pelajar
+          </button>
+          <button onclick="app.switchProfilSubView('kamus')" id="btnProfilKamus" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+            <i class="fa-solid fa-book-atlas mr-1.5"></i> Kamus Istilah Nahu
+          </button>
+          <button onclick="app.switchProfilSubView('guru')" id="btnProfilGuru" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
+            <i class="fa-solid fa-chalkboard-user mr-1.5"></i> Panel Mod Guru
+          </button>
+        </div>
+      </div>
+
+      <div id="profilDynamicContainer"></div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL: KAMUS NAHU QUICK ACCESS
+  =========================================== -->
+  <div id="kamusModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-cream-50 w-full max-w-4xl max-h-[88vh] rounded-2xl border-2 border-gold-500 shadow-2xl flex flex-col overflow-hidden animate-fade">
+      <div class="islamic-header-bg p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <i class="fa-solid fa-book-atlas text-gold-400 text-xl"></i>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Kamus Istilah Nahu Pondok</h3>
+            <p class="text-xs text-gold-200">Rujukan Pantas Istilah Arab, Definisi, Contoh & Bab Berkaitan</p>
+          </div>
+        </div>
+        <button onclick="app.toggleKamusModal(false)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-4 bg-white border-b border-cream-300 flex flex-col sm:flex-row gap-2.5">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+          <input type="text" id="modalKamusSearch" oninput="app.renderKamusItems('modalKamusList', this.value, document.getElementById('modalKamusCat').value)" placeholder="Cari istilah Arab atau Melayu (cth: الفاعل, Mubtada, Marfu', Amil)..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-cream-100 border border-cream-300 text-sm focus:outline-none focus:border-pondok-800" />
+        </div>
+        <select id="modalKamusCat" onchange="app.renderKamusItems('modalKamusList', document.getElementById('modalKamusSearch').value, this.value)" class="bg-cream-100 border border-cream-300 rounded-xl px-3 py-2 text-xs sm:text-sm font-semibold text-pondok-900">
+          <option value="all">Semua Kategori</option>
+          <option value="Asas Kalam">Asas Kalam</option>
+          <option value="Hukum I'rab">Hukum I'rab</option>
+          <option value="Marfu'at">Marfu'at (Yang Dirafa'kan)</option>
+          <option value="Mansubat & Majrurat">Mansubat & Majrurat</option>
+          <option value="Tawabi'">Tawabi' (Pengikut I'rab)</option>
+        </select>
+      </div>
+      <div id="modalKamusList" class="p-4 overflow-y-auto space-y-3 flex-1"></div>
+    </div>
+  </div>
+
+  <!-- FIXED BOTTOM NAVIGATION BAR (5 MAIN TABS) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t-2 border-gold-500/50 shadow-2xl">
+    <div class="max-w-xl mx-auto grid grid-cols-5 px-2 py-1.5">
+      <button onclick="app.navigate('utama')" data-nav="utama" class="bottom-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition text-pondok-900 font-bold">
+        <i class="fa-solid fa-house-chimney text-base"></i>
+        <span class="text-[11px] mt-0.5">1. Utama</span>
+      </button>
+      <button onclick="app.navigate('kitab')" data-nav="kitab" class="bottom-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition text-slate-500 font-medium">
+        <i class="fa-solid fa-book-open text-base"></i>
+        <span class="text-[11px] mt-0.5">2. Kitab</span>
+      </button>
+      <button onclick="app.navigate('latihan')" data-nav="latihan" class="bottom-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition text-slate-500 font-medium">
+        <i class="fa-solid fa-pen-to-square text-base"></i>
+        <span class="text-[11px] mt-0.5">3. Latihan</span>
+      </button>
+      <button onclick="app.navigate('kemajuan')" data-nav="kemajuan" class="bottom-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition text-slate-500 font-medium">
+        <i class="fa-solid fa-chart-line text-base"></i>
+        <span class="text-[11px] mt-0.5">4. Kemajuan</span>
+      </button>
+      <button onclick="app.navigate('profil')" data-nav="profil" class="bottom-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition text-slate-500 font-medium">
+        <i class="fa-solid fa-user-gear text-base"></i>
+        <span class="text-[11px] mt-0.5">5. Profil</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       APPLICATION DATA & INTERACTIVE ENGINE (AUTHENTIC MATAN AL-AJURUMIYYAH)
+  ========================================================================== -->
+  <script>
+    /**
+     * AUTHENTIC SCHOLARLY DATASET: KITAB MATAN AL-AJURUMIYYAH (IBN AJURRUM)
+     * Every Arabic text is accurately vocalized with tashkil according to classical tahqiq.
+     */
+    const KITAB_CHAPTERS = [
+      {
+        id: 1,
+        order: "Bab 1",
+        title: "Bab al-Kalam (Pengertian & Pembahagian Kalam)",
+        arabicTitle: "بَابُ الْكَلَامِ",
+        subtitle: "Syarat Kalam Nahu, Tiga Bahagian Kalimah & Tanda-tanda Mengenalinya",
+        summary: "Menjelaskan takrif al-Kalam di sisi ulama Nahu (Lafaz, Murakkab, Mufid, Bil-Wadh'i), pembahagian kalimah kepada Isim, Fi'il dan Huruf, serta alamat pengenalan setiap satunya.",
+        matanSegments: [
+          {
+            id: "1-1",
+            arabic: "الْكَلَامُ: هُوَ اللَّفْظُ الْمُرَكَّبُ الْمُفِيدُ بِالْوَضْعِ.",
+            malay: "Bermula Kalam itu (di sisi ahli Nahu): iaitu lafaz yang tersusun (sekurang-kurangnya dua kalimah), yang memberi faedah (difahami dengan sempurna), lagi yang diletakkan dengan sengaja (mengikut bahasa Arab).",
+            grammaticalNote: "الْكَلَامُ: Mubtada' marfu' dengan dhammah. هُوَ: Dhamir fashl (atau mubtada' kedua). اللَّفْظُ: Khabar marfu', manakala الْمُرَكَّبُ dan الْمُفِيدُ adalah sifat (na'at) bagi اللَّفْظُ."
+          },
+          {
+            id: "1-2",
+            arabic: "وَأَقْسَامُهُ ثَلَاثَةٌ: اسْمٌ، وَفِعْلٌ، وَحَرْفٌ جَاءَ لِمَعْنًى.",
+            malay: "Dan bahagian-bahagiannya (kalimah yang membentuk kalam itu) ada tiga: Isim (kata nama), Fi'il (kata kerja), dan Huruf yang datang membawa makna.",
+            grammaticalNote: "أَقْسَامُهُ: Mubtada' marfu' dan هُ mudhaf ilaih. ثَلَاثَةٌ: Khabar marfu'. اسْمٌ: Badal daripada ثَلَاثَةٌ."
+          },
+          {
+            id: "1-3",
+            arabic: "فَالِاسْمُ يُعْرَفُ بِالْخَفْضِ، وَالتَّنْوِينِ، وَدُخُولِ الْأَلِفِ وَاللَّامِ، وَحُرُوفِ الْخَفْضِ، وَهِيَ: مِنْ، وَإِلَى، وَعَنْ، وَعَلَى، وَفِي، وَرُبَّ، وَالْبَاءُ، وَالْكَافُ، وَاللَّامُ، وَحُرُوفُ الْقَسَمِ وَهِيَ: الْوَاوُ، وَالْبَاءُ، وَالتَّاءُ.",
+            malay: "Maka Isim itu dikenali dengan (salah satu daripada empat tanda): menerima baris bawah (Khafadh/Jar), menerima Tanwin, kemasukan Alif dan Lam (ال), serta kemasukan huruf-huruf Khafadh (Jar) iaitu: مِنْ, إِلَى, عَنْ, عَلَى, فِي, رُبَّ, الْبَاءُ, الْكَافُ, اللَّامُ, termasuk huruf-huruf sumpah (Qasam) iaitu: الْوَاوُ, الْبَاءُ, dan التَّاءُ.",
+            grammaticalNote: "الِاسْمُ: Mubtada' marfu'. يُعْرَفُ: Fi'il mudhari' mabni lil-majhul, na'ib fa'ilnya dhamir mustatir (هُوَ). Jumlah fi'liyyah pada mahal rafa' menjadi khabar."
+          },
+          {
+            id: "1-4",
+            arabic: "وَالْفِعْلُ يُعْرَفُ بِقَدْ، وَالسِّينِ، وَسَوْفَ، وَتَاءِ التَّأْنِيثِ السَّاكِنَةِ.",
+            malay: "Dan Fi'il (kata kerja) itu dikenali dengan kemasukan: قَدْ (sesungguhnya/kadang-kadang), السِّينُ (سَ - akan dekat), سَوْفَ (akan jauh), dan التَّاءُ التَّأْنِيثِ السَّاكِنَةُ (ta' perempuan yang mati di akhir fi'il madhi).",
+            grammaticalNote: "قَدْ masuk pada Fi'il Madhi dan Mudhari'. سَ dan سَوْفَ khusus untuk Fi'il Mudhari'. تَاءُ التَّأْنِيثِ السَّاكِنَةُ khusus untuk Fi'il Madhi."
+          },
+          {
+            id: "1-5",
+            arabic: "وَالْحَرْفُ مَا لَا يَصْلُحُ مَعَهُ دَلِيلُ الِاسْمِ وَلَا دَلِيلُ الْفِعْلِ.",
+            malay: "Dan Huruf itu ialah kalimah yang tidak layak (tidak menerima) bersamanya sebarang tanda Isim dan tidak juga tanda Fi'il.",
+            grammaticalNote: "الْحَرْفُ: Mubtada'. مَا: Isim maushul pada mahal rafa' sebagai khabar. Huruf tidak mempunyai tanda khusus pada dirinya, sebaliknya dikenali dengan ketiadaan tanda Isim dan Fi'il."
+          }
+        ],
+        notaKonsep: {
+          maksudMatan: "Imam Ibn Ajurrum memulakan kitab dengan mendefinisikan 'al-Kalam' kerana matlamat utama ilmu Nahu ialah menjaga lisan daripada tersalah baris ketika menuturkan kalam Arab. Suatu ungkapan hanya dinamakan 'Kalam' di sisi ulama Nahu apabila terkumpul 4 rukun serentak.",
+          pecahanDefinisi: [
+            { term: "اللَّفْظُ (Al-Lafz)", desc: "Suara yang mengandungi sebahagian daripada huruf Hijaiyyah (alif hingga ya'). Isyarat tangan atau tulisan semata-mata tidak dipanggil kalam di sisi Nahu." },
+            { term: "الْمُرَكَّبُ (Al-Murakkab)", desc: "Tersusun daripada dua kalimah atau lebih secara isnad (sandaran), seperti زَيْدٌ قَائِمٌ atau قَامَ زَيْدٌ." },
+            { term: "الْمُفِيدُ (Al-Mufid)", desc: "Memberi faedah yang sempurna sehingga pendengar tidak lagi tertunggu-tunggu sambungan ayat (diamnya penutur sudah memadai)." },
+            { term: "بِالْوَضْعِ (Bil-Wadh'i)", desc: "Dengan perletakan bahasa Arab dan dituturkan dengan qasad (sengaja), maka keluarlah percakapan orang mengigau atau bahasa bukan Arab." }
+          ],
+          kaedahSebabHukum: "Mengapa kalimah terbahagi kepada tiga sahaja (Isim, Fi'il, Huruf)? Berdasarkan istiqra' (kajian menyeluruh) ulama Nahu terhadap seluruh kalam Arab: jika kalimah menunjukkan makna pada dirinya sendiri tanpa disertai masa, ia adalah ISIM. Jika disertai masa (telah, sedang, akan), ia adalah FI'IL. Jika tidak menunjukkan makna melainkan setelah digabungkan dengan kalimah lain, ia adalah HURUF.",
+          perbandinganIstilah: [
+            { pair: "Kalam Nahu vs Kalam Lughah", diff: "Kalam Nahu wajib memenuhi 4 syarat (Lafaz, Murakkab, Mufid, Wadh'i). Kalam Lughah (bahasa) pula merangkumi apa sahaja yang memberi faham walaupun dengan isyarat mata atau garisan." },
+            { pair: "Huruf Ma'ani vs Huruf Mabani", diff: "Yang dimaksudkan dengan «وَحَرْفٌ جَاءَ لِمَعْنًى» ialah Huruf Ma'ani (seperti مِنْ, فِي, هَلْ) yang mempunyai makna dalam ayat, bukannya Huruf Mabani (huruf ejaan ا ب ت dalam satu perkataan)." }
+          ],
+          kesalahanLazim: [
+            "Menganggap susunan seperti «إِنْ قَامَ زَيْدٌ» (Jika Zaid berdiri...) sebagai Kalam sempurna, sedangkan ia belum Mufid kerana jawapan syarat belum disebut.",
+            "Keliru antara التَّاءُ التَّأْنِيثِ السَّاكِنَةُ (tanda Fi'il seperti قَامَتْ) dengan التَّاءُ الْمَرْبُوطَةُ (pada Isim seperti فَاطِمَةُ, مُسْلِمَةٌ)."
+          ],
+          semakanGuru: "[Perlu Semakan Guru / Wajah I'rab] Pada lafaz Matan «بِالْوَضْعِ», ulama mensyarahkan dua tafsiran: (1) Al-Wadh'u al-'Arabi (mengikut perletakan bahasa Arab), dan (2) Al-Qasdu (tuturan orang yang sedar/sengaja). Kedua-duanya saling melengkapi. Begitu juga huruf «رُبَّ» disenaraikan bersama huruf jar, walaupun di sisi ulama Kufah ia dianggap Isim; namun muktamad mazhab Basrah dan Matan ini ia adalah Huruf Khafadh.",
+          rumusan: "Kalam Nahu = Lafaz + Murakkab + Mufid + Wadh'i. Kalimah ada 3: Isim (tanda: Jar, Tanwin, Alif-Lam, Huruf Jar), Fi'il (tanda: Qad, Sin, Saufa, Ta' Ta'nith Sakinah), dan Huruf (tiada tanda Isim & Fi'il)."
+        },
+        examples: [
+          {
+            category: "Contoh Ayat Mudah",
+            arabic: "ذَهَبَ الطَّالِبُ إِلَى الْمَدْرَسَةِ",
+            translation: "Pelajar itu telah pergi ke sekolah.",
+            irabBreakdown: [
+              { word: "ذَهَبَ", irab: "فِعْلٌ مَاضٍ مَبْنِيٌّ عَلَى الْفَتْحِ الظَّاهِرِ", reason: "Kalimah Fi'il kerana menerima Ta' Ta'nith (ذَهَبَتْ). Mabni atas fathah." },
+              { word: "الطَّالِبُ", irab: "فَاعِلٌ مَرْفُوعٌ وَعَلَامَةُ رَفْعِهِ الضَّمَّةُ الظَّاهِرَةُ", reason: "Kalimah Isim kerana dimasuki Alif-Lam (ال). Marfu' kerana menjadi Fa'il." },
+              { word: "إِلَى", irab: "حَرْفُ جَرٍّ مَبْنِيٌّ عَلَى السُّكُونِ لَا مَحَلَّ لَهُ مِنَ الْإِعْرَابِ", reason: "Kalimah Huruf (Huruf Khafadh/Jar) yang membawa makna intiha' (kesudahan)." },
+              { word: "الْمَدْرَسَةِ", irab: "اسْمٌ مَجْرُورٌ بِـ(إِلَى) وَعَلَامَةُ جَرِّهِ الْكَسْرَةُ الظَّاهِرَةُ", reason: "Kalimah Isim kerana menerima Alif-Lam dan baris Khafadh (kasrah) disebabkan huruf إِلَى." }
+            ]
+          },
+          {
+            category: "Contoh Al-Quran & Wajah I'rab",
+            arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+            translation: "Dengan nama Allah Yang Maha Pemurah lagi Maha Penyayang.",
+            irabBreakdown: [
+              { word: "بِسْمِ", irab: "الْبَاءُ: حَرْفُ جَرٍّ، وَ(اسْمِ): اسْمٌ مَجْرُورٌ بِالْبَاءِ وَعَلَامَةُ جَرِّهِ الْكَسْرَةُ الظَّاهِرَةُ، وَهُوَ مُضَافٌ", reason: "Tanda Isim pada (اسْمِ) ialah kemasukan huruf Jar (الباء) dan berbaris Khafadh (kasrah). Jar dan majrur berta'alluq dengan fi'il atau isim yang dihadzafkan (تَقْدِيرُهُ: أَبْتَدِئُ atau ابْتِدَائِي)." },
+              { word: "اللَّهِ", irab: "لَفْظُ الْجَلَالَةِ مُضَافٌ إِلَيْهِ مَجْرُورٌ وَعَلَامَةُ جَرِّهِ الْكَسْرَةُ الظَّاهِرَةُ", reason: "Makhfudh (majrur) kerana menjadi Mudhaf Ilaih." },
+              { word: "الرَّحْمَٰنِ", irab: "نَعْتٌ (صِفَةٌ) أَوَّلُ لِلَفْظِ الْجَلَالَةِ مَجْرُورٌ وَعَلَامَةُ جَرِّهِ الْكَسْرَةُ", reason: "Tanda Isim ialah Alif-Lam dan Khafadh kerana mengikut man'ut." },
+              { word: "الرَّحِيمِ", irab: "نَعْتٌ ثَانٍ مَجْرُورٌ وَعَلَامَةُ جَرِّهِ الْكَسْرَةُ الظَّاهِرَةُ", reason: "Sifat kedua yang mengikut baris Khafadh." }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2,
+        order: "Bab 2",
+        title: "Bab al-I'rab (Pengertian & Pembahagian I'rab)",
+        arabicTitle: "بَابُ الْإِعْرَابِ",
+        subtitle: "Perubahan Akhir Kalimah, Lafzi vs Taqdiri, dan 4 Bahagian I'rab",
+        summary: "Menerangkan hakikat I'rab iaitu perubahan akhir kalimah disebabkan berbezanya 'Amil yang masuk sama ada secara Lafzi atau Taqdiri, serta pembahagian Rafa', Nasab, Khafadh, dan Jazam.",
+        matanSegments: [
+          {
+            id: "2-1",
+            arabic: "الْإِعْرَابُ هُوَ تَغْيِيرُ أَوَاخِرِ الْكَلِمِ لِاخْتِلَافِ الْعَوَامِلِ الدَّاخِلَةِ عَلَيْهَا لَفْظًا أَوْ تَقْدِيرًا.",
+            
+```
