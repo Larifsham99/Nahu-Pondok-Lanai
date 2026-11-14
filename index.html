@@ -2,208 +2,298 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuiz Feqah</title>
-    <!-- Memanggil Tailwind CSS untuk mencantikkan aplikasi -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pintar Nahu Sorof</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#002D62',
+                        emerald: '#50C878',
+                        gold: '#CFB53B',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Sembunyikan elemen scrollbar untuk antaramuka yang lebih bersih */
+        ::-webkit-scrollbar { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
 </head>
-<body class="bg-emerald-50 p-4 font-sans">
+<body class="bg-gray-100 text-gray-800 font-sans antialiased selection:bg-emerald selection:text-white">
 
-    <!-- KOTAK UTAMA APLIKASI -->
-    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg overflow-hidden mt-4 border border-emerald-100" style="min-height: 85vh;">
+    <!-- Bekas Utama Aplikasi Berpusat (Mobile View) -->
+    <div class="max-w-md mx-auto min-h-screen bg-gray-50 flex flex-col relative shadow-2xl">
         
-        <!-- ========================================== -->
-        <!-- SKRIN 1: PROFIL (Dipaparkan mula-mula)     -->
-        <!-- ========================================== -->
-        <div id="skrin-profil" class="p-8 flex flex-col items-center justify-center h-full mt-10">
-            <!-- Logo Ringkas -->
-            <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                <span class="text-4xl">🕌</span>
-            </div>
-            
-            <h1 class="text-2xl font-bold text-emerald-800 text-center mb-2">Kuiz Feqah Asas</h1>
-            <p class="text-gray-500 text-center mb-8 text-sm">Uji kefahaman feqah anda mengikut mazhab Syafie</p>
+        <!-- Pengepala (Header) -->
+        <header class="bg-navy text-gold p-5 shadow-lg rounded-b-3xl z-10 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wide">Pintar Nahu</h1>
+            <span id="header-score" class="text-sm font-semibold bg-white/20 px-3 py-1 rounded-full hidden">
+                Skor: 0
+            </span>
+        </header>
 
-            <div class="w-full space-y-4">
-                <input type="text" id="input-nama" placeholder="Masukkan Nama Anda..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-center text-lg font-medium">
+        <!-- Ruang Kandungan Utama -->
+        <main class="flex-1 p-5 overflow-y-auto pb-24" id="main-content">
+            
+            <!-- PAPARAN 1: MENU UTAMA -->
+            <section id="view-home" class="fade-in flex flex-col space-y-4 mt-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center mb-4">
+                    <h2 class="text-navy text-xl font-bold mb-2">Ahlan wa Sahlan!</h2>
+                    <p class="text-gray-500 text-sm">Mantapkan pemahaman asas Nahu & Sorof anda (Matan Al-Ajurumiyyah).</p>
+                </div>
+
+                <button onclick="showView('view-nota')" class="w-full bg-white border-2 border-navy text-navy font-bold py-4 rounded-2xl shadow-sm hover:bg-navy hover:text-white transition-colors flex items-center justify-center">
+                    📖 Nota & Takrif
+                </button>
+                <button onclick="startQuiz()" class="w-full bg-emerald text-white font-bold py-4 rounded-2xl shadow-md hover:opacity-90 transition-opacity text-lg flex items-center justify-center">
+                    🎮 Mula Kuiz
+                </button>
+                <button onclick="showLeaderboard()" class="w-full bg-gold text-navy font-bold py-4 rounded-2xl shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center">
+                    🏆 Papan Skor
+                </button>
+            </section>
+
+            <!-- PAPARAN 2: NOTA TAKRIF -->
+            <section id="view-nota" class="hidden fade-in space-y-4">
+                <button onclick="showView('view-home')" class="text-navy font-semibold text-sm mb-2 flex items-center">
+                    ← Kembali ke Menu
+                </button>
+                <div id="notes-container" class="space-y-4">
+                    <!-- Nota akan dijana oleh JavaScript -->
+                </div>
+            </section>
+
+            <!-- PAPARAN 3: KUIZ -->
+            <section id="view-kuiz" class="hidden fade-in flex flex-col">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="quiz-progress" class="text-sm font-bold text-gray-400">Soalan 1/5</span>
+                    <button onclick="showView('view-home')" class="text-red-500 font-semibold text-sm">Batal</button>
+                </div>
                 
-                <button onclick="masukMenu()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-200">
-                    Mula Bermain
-                </button>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- SKRIN 2: MENU UTAMA (Disorok pada mula)    -->
-        <!-- ========================================== -->
-        <div id="skrin-menu" class="hidden p-6">
-            
-            <!-- Kad Profil -->
-            <div class="bg-emerald-600 text-white rounded-xl p-4 mb-6 shadow-md flex justify-between items-center">
-                <div>
-                    <p class="text-sm opacity-80">Selamat Datang,</p>
-                    <h2 id="paparan-nama" class="text-xl font-bold">Pelajar</h2>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-6 min-h-[150px] flex items-center justify-center text-center">
+                    <h2 id="quiz-question" class="text-xl font-bold text-navy leading-snug">Soalan dimuatkan...</h2>
                 </div>
-                <div class="text-right">
-                    <p class="text-xs opacity-80">Total Markah</p>
-                    <p id="paparan-total-markah" class="text-lg font-bold text-yellow-300">⭐ 0</p>
-                </div>
-            </div>
 
-            <!-- Pilihan Level -->
-            <div class="space-y-3">
-                <button onclick="bukaKuiz('Level 1: Taharah', 'level1')" class="w-full bg-white border-2 border-emerald-500 text-emerald-700 font-bold py-3 px-4 rounded-xl flex justify-between items-center hover:bg-emerald-50 transition">
-                    <span>Level 1: Bab Taharah</span>
-                    <span>▶️</span>
-                </button>
+                <div id="quiz-options" class="flex flex-col space-y-3">
+                    <!-- Pilihan jawapan dijana oleh JS -->
+                </div>
+            </section>
+
+            <!-- PAPARAN 4: KEPUTUSAN & PAPAN SKOR -->
+            <section id="view-skor" class="hidden fade-in flex flex-col items-center justify-center mt-10 space-y-6">
+                <div class="bg-white p-8 rounded-3xl shadow-md w-full text-center border-t-4 border-gold">
+                    <h2 class="text-2xl font-bold text-navy mb-2">Keputusan</h2>
+                    <p class="text-gray-500 mb-4">Markah Terkini Anda:</p>
+                    <div id="final-score" class="text-5xl font-black text-emerald mb-6">0</div>
+                    
+                    <div id="save-score-form" class="space-y-3">
+                        <input type="text" id="player-name" placeholder="Masukkan Nama Anda..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center text-navy font-semibold focus:outline-none focus:border-emerald">
+                        <button onclick="saveScore()" class="w-full bg-navy text-gold font-bold py-3 rounded-xl hover:opacity-90">Simpan Rekod</button>
+                    </div>
+                </div>
+
+                <div class="w-full bg-white rounded-2xl shadow-sm p-5">
+                    <h3 class="text-lg font-bold text-navy mb-4 border-b pb-2">Senarai Top Skor</h3>
+                    <ul id="leaderboard-list" class="space-y-3">
+                        <!-- Skor dijana oleh JS -->
+                    </ul>
+                </div>
                 
-                <button onclick="alert('Level 2 belum dibina fail JSON nya lagi!')" class="w-full bg-white border-2 border-gray-200 text-gray-500 font-bold py-3 px-4 rounded-xl flex justify-between items-center opacity-70">
-                    <span>Level 2: Bab Solat (Terkunci)</span>
-                    <span>🔒</span>
-                </button>
+                <button onclick="showView('view-home')" class="text-navy font-bold py-3 w-full bg-gray-200 rounded-xl">Kembali ke Laman Utama</button>
+            </section>
 
-                <!-- Butang Ekstra -->
-                <div class="grid grid-cols-2 gap-3 pt-4">
-                    <button class="bg-yellow-100 text-yellow-800 font-semibold py-3 rounded-xl border border-yellow-300 shadow-sm">🏆 Score Board</button>
-                    <button class="bg-blue-100 text-blue-800 font-semibold py-3 rounded-xl border border-blue-300 shadow-sm">📚 Nota Rujukan</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- SKRIN 3: KUIZ (Disorok pada mula)          -->
-        <!-- ========================================== -->
-        <div id="skrin-kuiz" class="hidden p-6">
-            
-            <!-- Header Kuiz -->
-            <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-                <button onclick="paparSkrin('skrin-menu')" class="text-gray-500 font-bold hover:text-emerald-600 transition">⬅️ Kembali</button>
-                <h3 id="tajuk-level" class="font-bold text-emerald-800 text-sm">Level 1</h3>
-                <div id="skor-semasa" class="text-yellow-500 font-bold">⭐ 0</div>
-            </div>
-
-            <!-- Kotak Paparan Soalan -->
-            <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100 mb-6 shadow-sm min-h-[120px] flex flex-col justify-center">
-                <p id="nombor-soalan" class="text-xs text-emerald-600 font-bold mb-2">Soalan 1 / 10</p>
-                <p id="teks-soalan" class="text-lg font-medium text-gray-800 leading-snug">Sedang memuatkan soalan dari JSON...</p>
-            </div>
-
-            <!-- Kotak Butang Jawapan (Kosong - Akan dijana oleh JavaScript) -->
-            <div id="tempat-pilihan" class="space-y-3">
-            </div>
-
-        </div>
-
+        </main>
     </div>
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT: LOGIK SISTEM APLIKASI          -->
-    <!-- ========================================== -->
+    <!-- SCRIPT LOGIK APLIKASI -->
     <script>
-        // ------------------------------------
-        // MEMORI & PEMBOLEH UBAH
-        // ------------------------------------
-        let senaraiSoalan = []; 
-        let indeksSemasa = 0;   
-        let markahSemasa = 0;
-        let totalMarkahTerkumpul = 0; // Untuk simpan semua markah dari semua level
+        // --- DATA PANGKALAN: NOTA ---
+        const notaData = [
+            { tajuk: "Al-Kalam (الكلام)", takrif: "Lafaz yang tersusun, memberi faedah dan menggunakan bahasa Arab." },
+            { tajuk: "Al-Isim (الاسم)", takrif: "Kata nama. Tanda-tandanya: Menerima Khafd (baris bawah), Tanwin, Alif Lam, dan Huruf Jar." },
+            { tajuk: "Al-Fi'il (الفعل)", takrif: "Kata perbuatan. Terbahagi kepada Madhi (telah lepas), Mudhari' (sedang/akan berlaku), dan Amar (perintah)." },
+            { tajuk: "Al-Harf (الحرف)", takrif: "Kata sendi/huruf. Perkataan yang tidak sesuai padanya tanda isim mahupun tanda fi'il." },
+            { tajuk: "Wazan Fa'ala (فَعَلَ)", takrif: "Timbangan asas (Sighah) bagi Fi'il Madhi dalam ilmu Sorof." }
+        ];
 
-        // ------------------------------------
-        // FUNGSI 1: KAWALAN SKRIN
-        // ------------------------------------
-        function paparSkrin(idSkrin) {
-            // Tutup semua skrin
-            document.getElementById('skrin-profil').classList.add('hidden');
-            document.getElementById('skrin-menu').classList.add('hidden');
-            document.getElementById('skrin-kuiz').classList.add('hidden');
-            // Buka skrin yang diminta sahaja
-            document.getElementById(idSkrin).classList.remove('hidden');
+        // --- DATA PANGKALAN: KUIZ ---
+        const soalanKuiz = [
+            {
+                soalan: "Apakah tanda bagi perkataan jenis Al-Isim?",
+                pilihan: ["Boleh menerima Tanwin", "Menerima huruf 'Qad' (قد)", "Menunjukkan arahan"],
+                jawapan: 0
+            },
+            {
+                soalan: "Lafaz yang tersusun, memberi faedah dan dengan bahasa Arab dikenali sebagai:",
+                pilihan: ["Al-Harf", "Al-Kalam", "Al-Fi'il"],
+                jawapan: 1
+            },
+            {
+                soalan: "Apakah wazan asas bagi Fi'il Madhi?",
+                pilihan: ["Yaf'ulu (يَفْعُلُ)", "If'al (اِفْعَلْ)", "Fa'ala (فَعَلَ)"],
+                jawapan: 2
+            },
+            {
+                soalan: "Perkataan 'Zaidun' (زَيْدٌ) adalah sejenis...",
+                pilihan: ["Isim", "Fi'il", "Harf"],
+                jawapan: 0
+            },
+            {
+                soalan: "Perbuatan yang sedang atau akan berlaku dipanggil:",
+                pilihan: ["Fi'il Madhi", "Fi'il Mudhari'", "Fi'il Amar"],
+                jawapan: 1
+            }
+        ];
+
+        // --- PEMBOLEHUBAH STATE ---
+        let skorSemasa = 0;
+        let indeksSoalan = 0;
+
+        // --- FUNGSI KAWALAN PAPARAN (SPA) ---
+        function showView(viewId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+            
+            if(viewId === 'view-nota') renderNotes();
+            
+            // Sembunyikan skor di header jika di menu utama
+            if(viewId === 'view-home') {
+                document.getElementById('header-score').classList.add('hidden');
+            }
         }
 
-        // ------------------------------------
-        // FUNGSI 2: DAFTAR NAMA
-        // ------------------------------------
-        function masukMenu() {
-            const nama = document.getElementById('input-nama').value;
+        // --- FUNGSI RENDER NOTA ---
+        function renderNotes() {
+            const container = document.getElementById('notes-container');
+            container.innerHTML = '';
+            notaData.forEach(nota => {
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-emerald">
+                        <h3 class="font-bold text-navy text-lg mb-1">${nota.tajuk}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">${nota.takrif}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // --- FUNGSI KUIZ ---
+        function startQuiz() {
+            skorSemasa = 0;
+            indeksSoalan = 0;
+            // Shuffle soalan secara ringkas
+            soalanKuiz.sort(() => Math.random() - 0.5);
             
-            // Periksa jika nama kosong
-            if (nama.trim() === "") {
-                alert("Sila masukkan nama anda terlebih dahulu!");
+            document.getElementById('header-score').classList.remove('hidden');
+            updateHeaderScore();
+            showView('view-kuiz');
+            paparSoalan();
+        }
+
+        function paparSoalan() {
+            if (indeksSoalan >= soalanKuiz.length) {
+                tamatKuiz();
                 return;
             }
 
-            // Kemas kini nama di Skrin Menu
-            document.getElementById('paparan-nama').innerText = nama;
+            const dataSoalan = soalanKuiz[indeksSoalan];
+            document.getElementById('quiz-progress').innerText = `Soalan ${indeksSoalan + 1}/${soalanKuiz.length}`;
+            document.getElementById('quiz-question').innerText = dataSoalan.soalan;
             
-            // Pergi ke Skrin Menu
-            paparSkrin('skrin-menu');
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            dataSoalan.pilihan.forEach((pilihan, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-white border border-gray-200 text-gray-700 font-semibold p-4 rounded-xl hover:border-emerald hover:bg-emerald/10 transition-colors focus:outline-none";
+                btn.innerText = pilihan;
+                btn.onclick = () => semakJawapan(index, dataSoalan.jawapan);
+                optionsContainer.appendChild(btn);
+            });
         }
 
-        // ------------------------------------
-        // FUNGSI 3: TARIK FAIL JSON
-        // ------------------------------------
-        async function bukaKuiz(namaLevelPaparan, namaFailJson) {
-            // Kemas kini tajuk level di atas skrin kuiz
-            document.getElementById('tajuk-level').innerText = namaLevelPaparan;
-            paparSkrin('skrin-kuiz');
-            
-            // Kosongkan skrin sementara menunggu JSON tiba
-            document.getElementById('teks-soalan').innerText = "Sedang menyusun soalan...";
-            document.getElementById('tempat-pilihan').innerHTML = "";
-
-            try {
-                // Proses menarik fail .json (cth: data/level1.json)
-                const respon = await fetch(`data/${namaFailJson}.json`);
-                senaraiSoalan = await respon.json();
-                
-                // Set semula markah dan bermula dari soalan pertama
-                indeksSemasa = 0;
-                markahSemasa = 0;
-                document.getElementById('skor-semasa').innerText = `⭐ ${markahSemasa}`;
-                
-                // Paparkan soalan pertama
-                keluarkanSoalan();
-
-            } catch (ralat) {
-                // Jika fail json tidak dijumpai atau ada masalah koma tersalah letak
-                document.getElementById('teks-soalan').innerText = "Ralat: Fail soalan tidak dijumpai atau JSON rosak!";
-                console.error("Masalah JSON:", ralat);
+        function semakJawapan(dipilih, sebenar) {
+            if (dipilih === sebenar) {
+                skorSemasa += 20; // 20 markah per soalan (Total 100)
+                updateHeaderScore();
+                // Boleh tambah bunyi/animasi pop hijau di sini kelak
             }
+            indeksSoalan++;
+            paparSoalan();
         }
 
-        // ------------------------------------
-        // FUNGSI 4: PAPAR SOALAN & BINA BUTANG
-        // ------------------------------------
-        function keluarkanSoalan() {
-            // Semak adakah soalan sudah habis?
-            if (indeksSemasa >= senaraiSoalan.length) {
-                // Jika habis, tambah markah semasa ke dalam total markah
-                totalMarkahTerkumpul += markahSemasa;
-                
-                // Kemas kini markah di Menu Utama
-                document.getElementById('paparan-total-markah').innerText = `⭐ ${totalMarkahTerkumpul}`;
-                
-                alert(`Tahniah! Level ini tamat.\nMarkah anda: ${markahSemasa}`);
-                paparSkrin('skrin-menu');
+        function updateHeaderScore() {
+            document.getElementById('header-score').innerText = `Skor: ${skorSemasa}`;
+        }
+
+        function tamatKuiz() {
+            showView('view-skor');
+            document.getElementById('final-score').innerText = skorSemasa;
+            document.getElementById('save-score-form').classList.remove('hidden');
+            renderLeaderboard();
+        }
+
+        // --- FUNGSI PAPAN SKOR (LOCAL STORAGE) ---
+        function saveScore() {
+            const nama = document.getElementById('player-name').value.trim() || "Pelajar Pondok";
+            let rekodSkor = JSON.parse(localStorage.getItem('skorNahu')) || [];
+            
+            rekodSkor.push({ nama: nama, skor: skorSemasa, tarikh: new Date().toLocaleDateString() });
+            // Sort dari skor tertinggi
+            rekodSkor.sort((a, b) => b.skor - a.skor);
+            // Simpan top 5 sahaja
+            rekodSkor = rekodSkor.slice(0, 5);
+            
+            localStorage.setItem('skorNahu', JSON.stringify(rekodSkor));
+            
+            document.getElementById('save-score-form').classList.add('hidden');
+            document.getElementById('player-name').value = '';
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const rekodSkor = JSON.parse(localStorage.getItem('skorNahu')) || [];
+            const listContainer = document.getElementById('leaderboard-list');
+            listContainer.innerHTML = '';
+
+            if(rekodSkor.length === 0) {
+                listContainer.innerHTML = '<li class="text-sm text-gray-400 text-center">Belum ada rekod. Jadi yang terawal!</li>';
                 return;
             }
 
-            // Ambil soalan berdasarkan indeks (nombor) sekarang
-            const soalanKini = senaraiSoalan[indeksSemasa];
-            
-            // Kemas kini teks di Skrin Kuiz
-            document.getElementById('nombor-soalan').innerText = `Soalan ${indeksSemasa + 1} / ${senaraiSoalan.length}`;
-            document.getElementById('teks-soalan').innerText = soalanKini.soalan;
+            rekodSkor.forEach((rekod, index) => {
+                let pingat = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔹';
+                listContainer.innerHTML += `
+                    <li class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">${pingat}</span>
+                            <span class="font-semibold text-navy text-sm">${rekod.nama}</span>
+                        </div>
+                        <span class="font-black text-emerald">${rekod.skor}</span>
+                    </li>
+                `;
+            });
+        }
 
-            // Bina butang pilihan jawapan
-            const kotakPilihan = document.getElementById('tempat-pilihan');
-            kotakPilihan.innerHTML = ''; // Buang butang soalan sebelum ini
-            
-            soalanKini.pilihan.forEach(pilihanJawapan => {
-                const butang = document.createElement('button');
-                
-                // Reka bentuk butang Tailwind
-                butang.className = "w-full text-left bg-white border border-gray-300 hover:border-emerald-500 hover:bg-emerald-50 text-gray-700 font-medium py-3 px-5 rounded-xl transition duration-150 shadow-sm";
+        function showLeaderboard() {
+            document.getElementById('save-score-form').classList.add('hidden');
+            document.getElementById('final-score').innerText = '-';
+            renderLeaderboard();
+            showView('view-skor');
+        }
+
+        // --- MULAKAN APLIKASI ---
+        // Render leaderboard kosong pada mulanya
+        renderLeaderboard();
+    </script>
+</body>
+</html>
+ft bg-white border border-gray-300 hover:border-emerald-500 hover:bg-emerald-50 text-gray-700 font-medium py-3 px-5 rounded-xl transition duration-150 shadow-sm";
                 butang.innerText = pilihanJawapan;
                 
                 // Set apa terjadi bila butang ini ditekan
