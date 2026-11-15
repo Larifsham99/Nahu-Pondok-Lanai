@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nahu Pondok — Faham Nahu, Kuasai I'rab</title>
+  <meta name="description" content="Aplikasi pembelajaran Nahu berasaskan Matan al-Ajurumiyyah: matan, terjemahan, nota, latihan i'rab, hafazan dan kamus.">
+  <meta name="theme-color" content="#0f3d2e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <header class="appbar">
+    <button id="hdr-back" class="icon-btn" hidden aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div id="hdr-title" class="hdr-title">Nahu Pondok</div>
+  </header>
+
+  <main id="view" class="view" tabindex="-1">
+    <noscript><p style="padding:1rem">Aplikasi ini memerlukan JavaScript. Sila aktifkan JavaScript dalam pelayar anda.</p></noscript>
+  </main>
+
+  <nav class="nav" aria-label="Navigasi utama">
+    <a href="#/" data-tab="utama"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Utama</span></a>
+    <a href="#/kitab" data-tab="kitab"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5zM4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/></svg><span>Kitab</span></a>
+    <a href="#/latihan" data-tab="latihan"><svg viewBox="0 0 24 24"><path d="M14.5 4.5l5 5L9 20H4v-5zM13 6l5 5"/></svg><span>Latihan</span></a>
+    <a href="#/kemajuan" data-tab="kemajuan"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Kemajuan</span></a>
+    <a href="#/profil" data-tab="profil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profil</span></a>
+  </nav>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Data (boleh ditambah bab/soalan baharu tanpa mengubah kod) -->
+  <script src="assets/js/data/kitab-1.js"></script>
+  <script src="assets/js/data/kitab-2.js"></script>
+  <script src="assets/js/data/kitab-3.js"></script>
+  <script src="assets/js/data/irab.js"></script>
+  <script src="assets/js/data/kamus.js"></script>
+  <script src="assets/js/data/audio.js"></script>
+  <!-- Aplikasi -->
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
