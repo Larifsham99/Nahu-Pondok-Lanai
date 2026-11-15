@@ -126,7 +126,7 @@ NP.Store = (function () {
     r.st = r.best >= 90 ? 2 : 1;
     if (r.st === 2 && was !== 2) {
       const B = NP.findBab(babId);
-      log('🕌', `Hafaz perenggan ${Number(idx) + 1} — ${B ? B.ms : babId}`);
+      log('🕌', `Hafaz perenggan ${B ? NP.paraNo(B, idx) : Number(idx) + 1} — ${B ? B.ms : babId}`);
     }
     touchStreak(profile()); save();
   }

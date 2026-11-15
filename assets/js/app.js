@@ -6,7 +6,7 @@ window.NP = window.NP || {};
 NP.App = (function () {
   const U = NP.U, Store = NP.Store, E = NP.Engine;
   const $ = (s, r) => (r || document).querySelector(s);
-  const VER = '1.0.0';
+  const VER = '1.1.0';
 
   /* ---------- Ikon SVG ---------- */
   const IC = {
@@ -83,26 +83,27 @@ NP.App = (function () {
     <section class="hero">
       <div class="hero-top">${LOGO}<div><h1>Nahu Pondok</h1><p class="tag">Faham Nahu, Kuasai I'rab.</p></div></div>
       <p class="salam"><span class="ar-inline" lang="ar">السَّلَامُ عَلَيْكُمْ</span>, ${U.esc(p.nama)}</p>
-      <p class="sub">${waktu}. ${st.streak ? `🔥 ${st.streak} hari berturut-turut belajar.` : 'Mari mulakan pembelajaran hari ini.'}</p>
+      <p class="sub">${waktu}. ${st.streak ? '' : 'Mari mulakan pembelajaran hari ini.'}</p>
+      <div class="hero-pills">${st.streak ? `<span class="pill">🔥 ${st.streak} hari berturut-turut</span>` : ''}<span class="pill">🎯 Penguasaan ${st.penguasaan}%</span><span class="pill">✓ ${st.selesai} bab selesai</span></div>
     </section>
 
     <div class="stats">
-      <a class="stat" href="#/kitab"><b>${st.dibaca}<small>/${st.totalBab}</small></b><span>Bab dipelajari</span></a>
-      <a class="stat" href="#/kemajuan"><b>${st.sesi}</b><span>Latihan diselesaikan</span></a>
-      <a class="stat" href="#/kemajuan"><b>${st.penguasaan}<small>%</small></b><span>Penguasaan</span></a>
-      <a class="stat" href="#/hafazan"><b>${st.hafazDone}<small>/${st.hafazTotal}</small></b><span>Perenggan dihafaz</span></a>
+      <a class="stat t-emerald" href="#/kitab"><i class="s-ic">📖</i><b>${st.dibaca}<small>/${st.totalBab}</small></b><span>Bab dipelajari</span></a>
+      <a class="stat t-sky" href="#/kemajuan"><i class="s-ic">✍️</i><b>${st.sesi}</b><span>Latihan diselesaikan</span></a>
+      <a class="stat t-amber" href="#/kemajuan"><i class="s-ic">🎯</i><b>${st.penguasaan}<small>%</small></b><span>Penguasaan</span></a>
+      <a class="stat t-violet" href="#/hafazan"><i class="s-ic">🌙</i><b>${st.hafazDone}<small>/${st.hafazTotal}</small></b><span>Perenggan dihafaz</span></a>
     </div>
 
     <div class="actions">
-      <a class="action primary" href="#/bab/${nextBab.id}/matan"><span class="a-ic">▶</span><span><b>Sambung Belajar</b><small>${U.esc(nextBab.ms)}</small></span></a>
-      <a class="action" href="#/latihan"><span class="a-ic">✎</span><span><b>Mula Latihan</b><small>13 jenis latihan</small></span></a>
-      <a class="action" href="#/hafazan"><span class="a-ic ar-ic" lang="ar">حفظ</span><span><b>Hafazan Matan</b><small>Baca, sembunyi, uji</small></span></a>
+      <a class="action primary" href="#/bab/${nextBab.id}/matan"><span class="a-ic">▶</span><span><b>Sambung Belajar</b><small>${U.esc(nextBab.ms)}</small></span><span class="a-go">›</span></a>
+      <a class="action t-sky" href="#/latihan"><span class="a-ic">✎</span><span><b>Mula Latihan</b><small>13 jenis latihan</small></span></a>
+      <a class="action t-violet" href="#/hafazan"><span class="a-ic ar-ic" lang="ar">حفظ</span><span><b>Hafazan Matan</b><small>Baca, sembunyi, uji</small></span></a>
     </div>
 
     <div class="quick">
-      <a href="#/irab" class="qk"><span lang="ar">إعراب</span>Latihan I'rab</a>
-      <a href="#/kamus" class="qk"><span lang="ar">قاموس</span>Kamus Nahu</a>
-      <a href="#/latihan" data-act="ulangkaji" class="qk ${due ? 'hot' : ''}"><span>${due}</span>Ulang Kaji</a>
+      <a href="#/irab" class="qk t-emerald"><span lang="ar">إعراب</span>Latihan I'rab</a>
+      <a href="#/kamus" class="qk t-sky"><span lang="ar">قاموس</span>Kamus Nahu</a>
+      <a href="#/latihan" data-act="ulangkaji" class="qk t-coral ${due ? 'hot' : ''}"><span>${due}</span>Ulang Kaji</a>
     </div>
 
     <h3 class="sec-title">Bab Sedang Dipelajari</h3>
@@ -135,13 +136,13 @@ NP.App = (function () {
       <p class="small muted">Setiap bab mengandungi: <span class="lbl matan">Matan</span> teks kitab · <span class="lbl ms">Terjemahan</span> · <span class="lbl syarah">Nota</span> syarah & huraian penyusun · Contoh · Latihan.</p>
     </div>
     <div class="quick">
-      <a href="#/hafazan" class="qk"><span lang="ar">حفظ</span>Hafazan</a>
-      <a href="#/kamus" class="qk"><span lang="ar">قاموس</span>Kamus</a>
-      <a href="#/irab" class="qk"><span lang="ar">إعراب</span>I'rab</a>
+      <a href="#/hafazan" class="qk t-violet"><span lang="ar">حفظ</span>Hafazan</a>
+      <a href="#/kamus" class="qk t-sky"><span lang="ar">قاموس</span>Kamus</a>
+      <a href="#/irab" class="qk t-emerald"><span lang="ar">إعراب</span>I'rab</a>
     </div>
-    ${GROUPS.map(g => `
-      <h3 class="sec-title">${g.t}</h3>
-      <div class="list">${NP.BAB.filter(b => b.no >= g.r[0] && b.no <= g.r[1]).map(b => {
+    ${GROUPS.map((g, gi) => `
+      <h3 class="sec-title"><span class="dot g${gi + 1}"></span>${g.t}</h3>
+      <div class="list g${gi + 1}">${NP.BAB.filter(b => b.no >= g.r[0] && b.no <= g.r[1]).map(b => {
         const r = p.bab[b.id];
         return `<a class="li" href="#/bab/${b.id}/matan"><span class="li-no">${b.no}</span><span class="li-main"><span class="ar li-ar" dir="rtl" lang="ar">${b.ar}</span><span class="li-ms">${U.esc(b.ms)}</span></span><span class="li-end">${statusIcon(r)}${r && r.best ? `<small>${r.best}%</small>` : ''}</span></a>`;
       }).join('')}</div>`).join('')}`;
@@ -189,7 +190,7 @@ NP.App = (function () {
       <div class="matan ${babUI.hide ? 'hidden-mode' : ''}">
         ${b.matan.map((m, i) => `
           <div class="mp ${m.pembuka ? 'pembuka' : ''} ${babUI.open[b.id + i] || babUI.inlineTr ? 'open' : ''}" data-act="mp" data-v="${b.id + i}" tabindex="0" role="button" aria-expanded="${!!(babUI.open[b.id + i] || babUI.inlineTr)}">
-            ${!m.pembuka ? `<span class="mp-no">${i}</span>` : ''}
+            ${!m.pembuka ? `<span class="mp-no">${NP.paraNo(b, i)}</span>` : ''}
             <div class="ar mp-ar" dir="rtl" lang="ar">${m.ar}</div>
             <div class="mp-ms">${U.esc(m.ms)}</div>
           </div>`).join('')}
@@ -202,7 +203,7 @@ NP.App = (function () {
       <div class="label-row"><span class="lbl ms">TERJEMAHAN</span><small class="muted">Matan dipadankan perenggan demi perenggan dengan terjemahan Bahasa Melayu.</small></div>
       <div class="pairs">${b.matan.map((m, i) => `
         <div class="pair">
-          <div class="pair-no">${m.pembuka ? '—' : i}</div>
+          <div class="pair-no">${m.pembuka ? '—' : NP.paraNo(b, i)}</div>
           <div class="ar pair-ar" dir="rtl" lang="ar">${m.ar}</div>
           <div class="pair-ms">${U.esc(m.ms)}</div>
         </div>`).join('')}</div>
@@ -264,9 +265,9 @@ NP.App = (function () {
       <button class="btn ${due.length ? 'primary' : 'ghost'}" data-act="ulangkaji" ${due.length ? '' : 'disabled'}>Mula</button>
     </div>
 
-    <a class="card feature" href="#/irab"><span class="f-ic" lang="ar">إعراب</span><div><h3>Latihan I'rab</h3><p class="small muted">6 tahap: jenis kalimah → kedudukan → hukum → tanda → sebab → i'rab lengkap.</p></div><span class="chev">›</span></a>
-    <a class="card feature" href="#/ujian"><span class="f-ic">⏱</span><div><h3>Ujian Campuran</h3><p class="small muted">Pilih bab, tahap kesukaran, bilangan soalan dan had masa.</p></div><span class="chev">›</span></a>
-    <div class="card feature" data-act="tugasan-open" role="button" tabindex="0"><span class="f-ic">📋</span><div><h3>Tugasan daripada Guru</h3><p class="small muted">Masukkan kod tugasan yang diberi oleh guru.</p></div><span class="chev">›</span></div>
+    <a class="card feature t-emerald" href="#/irab"><span class="f-ic" lang="ar">إعراب</span><div><h3>Latihan I'rab</h3><p class="small muted">6 tahap: jenis kalimah → kedudukan → hukum → tanda → sebab → i'rab lengkap.</p></div><span class="chev">›</span></a>
+    <a class="card feature t-amber" href="#/ujian"><span class="f-ic">⏱</span><div><h3>Ujian Campuran</h3><p class="small muted">Pilih bab, tahap kesukaran, bilangan soalan dan had masa.</p></div><span class="chev">›</span></a>
+    <div class="card feature t-sky" data-act="tugasan-open" role="button" tabindex="0"><span class="f-ic">📋</span><div><h3>Tugasan daripada Guru</h3><p class="small muted">Masukkan kod tugasan yang diberi oleh guru.</p></div><span class="chev">›</span></div>
     <form class="card tugasan-form" data-form="tugasan" hidden>
       <label>Kod tugasan<textarea name="kod" rows="3" placeholder="NP1.xxxxx.xxxx" required></textarea></label>
       <button class="btn primary block">Buka Tugasan</button>
@@ -367,23 +368,23 @@ NP.App = (function () {
           <div class="rec"><button class="btn sm ghost" data-act="rec">🎙 Rakam bacaan saya</button><span class="rec-st small muted"></span><audio class="rec-play" controls hidden></audio></div>
         </div>
         <div class="toolbar"><button class="tb" data-act="font" data-v="-1">A−</button><button class="tb" data-act="font" data-v="1">A+</button></div>
-        <div class="matan">${b.matan.map((m, i) => `<div class="mp ${m.pembuka ? 'pembuka' : ''}">${!m.pembuka ? `<span class="mp-no">${i}</span>` : ''}<div class="ar mp-ar" dir="rtl" lang="ar">${m.ar}</div>${!m.pembuka ? `<div class="mp-foot">${stLbl(i)}</div>` : ''}</div>`).join('')}</div>`;
+        <div class="matan">${b.matan.map((m, i) => `<div class="mp ${m.pembuka ? 'pembuka' : ''}">${!m.pembuka ? `<span class="mp-no">${NP.paraNo(b, i)}</span>` : ''}<div class="ar mp-ar" dir="rtl" lang="ar">${m.ar}</div>${!m.pembuka ? `<div class="mp-foot">${stLbl(i)}</div>` : ''}</div>`).join('')}</div>`;
     } else if (mode === 'sembunyi') {
       const toks = E.tokens(b.matan[hfUI.p].ar);
       const r = U.rng(hfUI.seed * 7919 + hfUI.p);
       const hideSet = new Set(U.shuffle(toks.map((_, i) => i), r).slice(0, Math.round(toks.length * hfUI.level / 100)));
       inner = `
         <p class="small muted">Pilih perenggan dan peratus perkataan yang disembunyikan. Cuba ingat, kemudian tekan kotak untuk melihat perkataan.</p>
-        <div class="pchips">${paras.map(i => `<button class="pchip ${i === hfUI.p ? 'on' : ''}" data-act="hf-p" data-v="${i}">${i}</button>`).join('')}</div>
+        <div class="pchips">${paras.map(i => `<button class="pchip ${i === hfUI.p ? 'on' : ''}" data-act="hf-p" data-v="${i}">${NP.paraNo(b, i)}</button>`).join('')}</div>
         <div class="seg">${[25, 50, 75, 100].map(l => `<button class="seg-b ${hfUI.level === l ? 'on' : ''}" data-act="hf-level" data-v="${l}">${l}%</button>`).join('')}</div>
         <div class="card hide-card"><div class="ar hide-text" dir="rtl" lang="ar">${toks.map((t, i) => hideSet.has(i) && !hfUI.revealed[i] ? `<button class="hw" data-act="hf-rev" data-v="${i}" aria-label="Papar perkataan">${'ـ'.repeat(Math.max(3, Math.min(8, U.norm(t).length)))}</button>` : `<span class="sw ${hfUI.revealed[i] ? 'rev' : ''}">${t}</span>`).join(' ')}</div></div>
         <div class="btn-row"><button class="btn ghost grow" data-act="hf-new">🔀 Rawak semula</button><button class="btn ghost grow" data-act="hf-all">👁 Papar semua</button></div>
-        <button class="btn primary block" data-act="hf-test" data-v="${hfUI.p}">Uji perenggan ${hfUI.p}</button>`;
+        <button class="btn primary block" data-act="hf-test" data-v="${hfUI.p}">Uji perenggan ${NP.paraNo(b, hfUI.p)}</button>`;
     } else {
       inner = `
         <p class="small muted">Uji hafazan dengan mengisi perkataan yang hilang. Skor 90% ke atas = perenggan dihafaz.</p>
         <button class="btn primary block" data-act="hf-test" data-v="all">Uji semua perenggan bab ini</button>
-        <div class="list">${paras.map(i => `<button class="li" data-act="hf-test" data-v="${i}"><span class="li-no">${i}</span><span class="li-main"><span class="ar li-ar small-ar" dir="rtl" lang="ar">${b.matan[i].ar.split(' ').slice(0, 6).join(' ')} …</span></span><span class="li-end">${stLbl(i)}</span></button>`).join('')}</div>`;
+        <div class="list">${paras.map(i => `<button class="li" data-act="hf-test" data-v="${i}"><span class="li-no">${NP.paraNo(b, i)}</span><span class="li-main"><span class="ar li-ar small-ar" dir="rtl" lang="ar">${b.matan[i].ar.split(' ').slice(0, 6).join(' ')} …</span></span><span class="li-end">${stLbl(i)}</span></button>`).join('')}</div>`;
     }
     return `
       <div class="bab-head sm"><div class="ar bh-ar" dir="rtl" lang="ar">${b.ar}</div><div class="bh-ms">${U.esc(b.ms)}</div></div>
@@ -488,8 +489,8 @@ NP.App = (function () {
       <div class="btn-row"><button class="btn ghost grow" data-act="backup">⬇ Muat Turun Sandaran</button><label class="btn ghost grow file">⬆ Pulihkan<input type="file" accept=".json,application/json" data-act="restore" hidden></label></div>
     </div>
 
-    <a class="card feature" href="#/guru"><span class="f-ic">👳</span><div><h3>Mod Guru</h3><p class="small muted">Bina tugasan & ujian, lihat markah dan kelemahan pelajar.</p></div><span class="chev">›</span></a>
-    <a class="card feature" href="#/tentang"><span class="f-ic">ℹ</span><div><h3>Tentang & Ketepatan Ilmiah</h3><p class="small muted">Sumber matan, penafian, lesen.</p></div><span class="chev">›</span></a>
+    <a class="card feature t-violet" href="#/guru"><span class="f-ic">🎓</span><div><h3>Mod Guru</h3><p class="small muted">Bina tugasan & ujian, lihat markah dan kelemahan pelajar.</p></div><span class="chev">›</span></a>
+    <a class="card feature t-sky" href="#/tentang"><span class="f-ic">ℹ</span><div><h3>Tentang & Ketepatan Ilmiah</h3><p class="small muted">Sumber matan, penafian, lesen.</p></div><span class="chev">›</span></a>
 
     <button class="btn danger block" data-act="reset">Padam semua data di peranti ini</button>
     <p class="small muted center">Nahu Pondok v${VER}</p>`;
@@ -510,7 +511,7 @@ NP.App = (function () {
       <ul><li><span class="lbl matan">MATAN</span> teks kitab asal.</li><li><span class="lbl ms">TERJEMAHAN</span> terjemahan Bahasa Melayu.</li><li><span class="lbl syarah">SYARAH / NOTA</span> huraian, contoh dan latihan oleh penyusun.</li><li>🔎 <b>Untuk Semakan Guru</b> — perkara khilaf atau perincian yang disarankan disemak bersama guru.</li></ul>
       <p class="small">Terdapat perbezaan kecil antara nuskhah matan (contohnya bilangan mansubat dan kemasukan [[سَمِعْتُ]] dalam senarai zhanna). Bandingkan dengan nuskhah yang digunakan di pondok anda.</p></div>
     <div class="card nota"><h3>Privasi</h3><p>Aplikasi berfungsi sepenuhnya di luar talian. Tiada akaun, tiada iklan, tiada data dihantar ke mana-mana pelayan. Semua kemajuan disimpan dalam peranti.</p></div>
-    <div class="card nota"><h3>Lesen Fon</h3><p class="small">Fon <b>Amiri</b> dan <b>Noto Naskh Arabic</b> digunakan di bawah SIL Open Font License 1.1 (lihat folder <code>assets/fonts</code>).</p></div>`;
+    <div class="card nota"><h3>Lesen Fon</h3><p class="small">Fon <b>Amiri</b>, <b>Noto Naskh Arabic</b> dan <b>Plus Jakarta Sans</b> digunakan di bawah SIL Open Font License 1.1 (lihat folder <code>assets/fonts</code>).</p></div>`;
   };
 
   /* ---------- GURU ---------- */
@@ -652,7 +653,7 @@ NP.App = (function () {
       case 'hf-test': {
         const id = parts()[1]; const b = NP.findBab(id);
         const paras = v === 'all' ? null : [Number(v)];
-        NP.Quiz.start({ title: `Hafazan Bab ${b.no}${paras ? ' · Perenggan ' + v : ''}`, questions: E.hafazSet(id, paras, paras ? null : 2), src: { type: 'hafazan', back: `#/hafazan/${id}/uji` } });
+        NP.Quiz.start({ title: `Hafazan Bab ${b.no}${paras ? ' · Perenggan ' + NP.paraNo(b, v) : ''}`, questions: E.hafazSet(id, paras, paras ? null : 2), src: { type: 'hafazan', back: `#/hafazan/${id}/uji` } });
         break;
       }
       case 'rec': toggleRec(el); break;

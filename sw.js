@@ -1,7 +1,7 @@
 /* Nahu Pondok — Service Worker (luar talian)
    Tukar VERSION setiap kali fail aplikasi dikemas kini supaya pengguna
    menerima versi baharu. */
-const VERSION = 'nahu-pondok-v1.0.0';
+const VERSION = 'nahu-pondok-v1.1.0';
 const ASSETS = [
   './', './index.html', './manifest.webmanifest',
   './assets/css/app.css',
@@ -10,6 +10,8 @@ const ASSETS = [
   './assets/js/store.js', './assets/js/engine.js', './assets/js/app.js',
   './assets/fonts/amiri-arabic-400-normal.woff2', './assets/fonts/amiri-arabic-700-normal.woff2',
   './assets/fonts/noto-naskh-arabic-arabic-400-normal.woff2', './assets/fonts/noto-naskh-arabic-arabic-600-normal.woff2',
+  './assets/fonts/plus-jakarta-sans-latin-400-normal.woff2', './assets/fonts/plus-jakarta-sans-latin-600-normal.woff2',
+  './assets/fonts/plus-jakarta-sans-latin-700-normal.woff2', './assets/fonts/plus-jakarta-sans-latin-800-normal.woff2',
   './assets/icons/icon.svg', './assets/icons/icon-192.png', './assets/icons/icon-512.png'
 ];
 

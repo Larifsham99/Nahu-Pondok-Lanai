@@ -29,6 +29,8 @@ NP.U = (function () {
 })();
 
 NP.findBab = (id) => NP.BAB.find(b => b.id === id);
+/* Nombor perenggan untuk paparan (basmalah pembuka tidak dinomborkan) */
+NP.paraNo = (b, i) => Number(i) + (b.matan[0] && b.matan[0].pembuka ? 0 : 1);
 
 /* ---------- Enjin Soalan ---------- */
 NP.Engine = (function () {
@@ -138,7 +140,7 @@ NP.Engine = (function () {
     const dis = U.pick(allWords, 3, r);
     const shown = toks.map((t, i) => i === wi ? t.replace(ans, '___') : t).join(' ');
     return { id: `hf:${babId}:${p}:${wi}`, bab: babId, t: 'fill', j: 'hafaz', d: 2, k: 'hafazan', gen: true, hafaz: { bab: babId, p },
-      q: `Lengkapkan matan (${b.ms}, perenggan ${p}):`, ar: shown, o: [ans].concat(dis), a: 0, e: 'Matan penuh: [[' + b.matan[p].ar + ']]' };
+      q: `Lengkapkan matan (${b.ms}, perenggan ${NP.paraNo(b, p)}):`, ar: shown, o: [ans].concat(dis), a: 0, e: 'Matan penuh: [[' + b.matan[p].ar + ']]' };
   }
   function hafazSet(babId, paras, perPara) {
     const b = NP.findBab(babId); if (!b) return [];
@@ -477,7 +479,9 @@ NP.Quiz = (function () {
     const wrongN = S.st.filter(s => !s.first).length;
     root.innerHTML = `
       <div class="summary">
-        <div class="card sum-card">
+        <div class="card sum-card ${pct >= 70 ? 'win' : ''}">
+          ${pct >= 70 ? `<div class="confetti" aria-hidden="true">${Array.from({ length: 18 }, (_, i) => `<i style="--i:${i}"></i>`).join('')}</div>` : ''}
+          <div class="medal">${pct >= 90 ? '🏆' : pct >= 70 ? '⭐' : pct >= 50 ? '👍' : '💪'}</div>
           <div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
           <h2>${U.esc(S.title)}</h2>
           <p class="big">${S.score} / ${S.qs.length} markah</p>

@@ -142,12 +142,12 @@ assets/js/store.js         Storan, statistik, ulang kaji berjarak, sandaran
 assets/js/engine.js        Enjin soalan, penjana i'rab/hafazan, kod tugasan, sesi latihan
 assets/js/app.js           Penghala & semua paparan
 assets/js/data/            Kandungan (kitab, i'rab, kamus, audio)
-assets/fonts/              Amiri & Noto Naskh Arabic (SIL OFL 1.1)
+assets/fonts/              Amiri, Noto Naskh Arabic, Plus Jakarta Sans (SIL OFL 1.1)
 tools/                     Skrip semakan & ujian
 docs/SEMAKAN-ILMIAH.md     Senarai semakan untuk guru
 ```
 
 ## Lesen pihak ketiga
-- Fon **Amiri** dan **Noto Naskh Arabic**: SIL Open Font License 1.1 (fail lesen dalam `assets/fonts/`). Fon ini boleh disertakan dalam produk komersial.
+- Fon **Amiri**, **Noto Naskh Arabic** dan **Plus Jakarta Sans**: SIL Open Font License 1.1 (fail lesen dalam `assets/fonts/`). Fon ini boleh disertakan dalam produk komersial.
 - Matan al-Ajurumiyyah ialah karya klasik abad ke-8 Hijrah (domain awam).
 - Ayat al-Quran dipetik untuk tujuan pengajaran.
